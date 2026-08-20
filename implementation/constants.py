@@ -5,7 +5,7 @@ k = 3
 q = 7681
 eta = 1
 beta = 633
-ell = 256
-gamma = 256
+kappa = 32  # bytes
+gamma = 32  # bytes
 
 field = galois.GF(q)

@@ -6,7 +6,7 @@ import secrets
 
 import numpy as np
 
-from constants import n, k, q, ell, field, beta, gamma, eta
+from constants import n, k, q, kappa, field, beta, gamma, eta
 from noise import generate_noise
 from ntt import PolyRingRqNtt
 
@@ -59,7 +59,7 @@ def compute_shared_key(e1: np.ndarray, e2: np.ndarray, r: np.ndarray) -> bytes:
     hasher.update(bit_pack_vector(e1))
     hasher.update(bit_pack_vector(e2))
     hasher.update(bit_pack_vector(r))
-    return hasher.digest(ell // 8)
+    return hasher.digest(kappa)
 
 
 def compute_implicit_rejection(z: bytes, c1: np.ndarray, c2: np.ndarray) -> bytes:
@@ -67,7 +67,7 @@ def compute_implicit_rejection(z: bytes, c1: np.ndarray, c2: np.ndarray) -> byte
     hasher.update(z)
     hasher.update(bit_pack_vector(c1))
     hasher.update(bit_pack_vector(c2))
-    return hasher.digest(ell // 8)
+    return hasher.digest(kappa)
 
 
 def norm_squared(x: np.ndarray) -> int:
@@ -90,7 +90,7 @@ def keygen() -> tuple[SecretKey, PublicKey]:
                 B_inv_hat[i] = np.linalg.inv(B_hat[i])
         except np.linalg.LinAlgError:
             B_inv_hat = None
-    z = secrets.token_bytes(gamma // 8)
+    z = secrets.token_bytes(gamma)
     return SecretKey(S_hat=S_hat, B_inv_hat=B_inv_hat, A_hat=A_hat, z=z), PublicKey(
         A_hat=A_hat, B_hat=B_hat
     )
